@@ -8,7 +8,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Gettone">
-<meta name="description" content="Sala giochi con 11 giochi arcade e di carte.">
+<meta name="description" content="Sala giochi con 14 giochi arcade e di carte.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -263,7 +263,7 @@ canvas.screen{display:block;border-radius:10px;box-shadow:0 0 0 2px var(--line),
   <header class="marquee">
     <span class="coin">1 GETTONE = 1 PARTITA</span>
     <h1>Arcade Gettone</h1>
-    <p>Tredici cabinati in una sala sola. Si gioca da tastiera sul Mac o con i tasti a schermo sull'iPhone.</p>
+    <p>Quattordici cabinati in una sala sola. Si gioca da tastiera sul Mac o con i tasti a schermo sull'iPhone.</p>
     <div class="sound"><button class="tgl" id="lmus">♪ Musica</button><button class="tgl" id="lsfx">Effetti sonori</button></div>
   </header>
   <section class="shelf"><h2>Sala arcade</h2><div class="grid" id="g-arcade"></div></section>
@@ -448,7 +448,7 @@ function loop(t){const dt=Math.min(.05,(t-last)/1000);last=t;if(!cur)return;
   else if(ovOpen&&!paused&&I.p('A')&&!cur.dom)ovAction&&ovAction();
   else if(!ovOpen&&cur.update)cur.update(dt);
   cur.draw&&cur.draw();I.hit.clear();raf=requestAnimationFrame(loop)}
-function route(){const id=location.hash.slice(1);if(GAMES.some(g=>g.id===id)){if(!curDef||!cur||curDef.id!==id)open(id)}else if(cur)close()}
+function route(){const id=location.hash.slice(1),gd=GAMES.find(g=>g.id===id);if(gd&&gd.href){location.href=gd.href;return}if(GAMES.some(g=>g.id===id)){if(!curDef||!cur||curDef.id!==id)open(id)}else if(cur)close()}
 addEventListener('hashchange',route);
 
 /* ================= Blocchi ================= */
@@ -1492,6 +1492,7 @@ const GAMES=[
   {id:'solitario',name:'Solitario',kind:'carte',desc:'Klondike a tocchi con annulla, suggerimenti e pesca 3.',make:Solitario,label:'Mosse',song:'lounge'},
   {id:'poker',name:'Texas Hold\'em',kind:'carte',desc:'Testa a testa con il banco: punta, bluffa, sbanca.',make:Holdem,label:'Fiches',song:'lounge'},
   {id:'biliardo',name:'Biliardo',kind:'tavolo',desc:'Palla 8 contro il Professore: mira, carica e imbuca.',make:Biliardo,label:'Vinte',song:'lounge'},
+  {id:'maze',name:'Maze Runner 2040',kind:'arcade',desc:'Labirinto 3D in prima persona: raccogli i cristalli e abbatti i robot.',href:'maze-runner-2040.html',best:()=>{try{return JSON.parse(localStorage.getItem('mr2040')||'{}').best||0}catch(e){return 0}}},
   {id:'dama',name:'Cyber Dama',kind:'tavolo',desc:'Dama al neon contro una CPU che migliora a ogni vittoria.',make:Dama,label:'Vinte',song:'cyber'},
 ];
 function preview(id,cv){const x=cv.getContext('2d'),w=cv.width,h=cv.height;const bg=x.createLinearGradient(0,0,0,h);bg.addColorStop(0,'#1d1238');bg.addColorStop(1,'#0b0816');x.fillStyle=bg;x.fillRect(0,0,w,h);
@@ -1512,11 +1513,12 @@ function preview(id,cv){const x=cv.getContext('2d'),w=cv.width,h=cv.height;const
   if(id==='biliardo'){const t=BIL_I.table;if(imgOk(t))x.drawImage(t,8,10,w-16,h-20);else{x.fillStyle='#6b3a1d';x.fillRect(8,10,w-16,h-20)}[[160,75,1],[170,69,9],[170,81,3],[180,63,11],[180,75,8],[180,87,6],[70,75,0]].forEach(([bx,by,n])=>{const im=BIL_I.balls&&BIL_I.balls[n];if(imgOk(im))x.drawImage(im,bx-7,by-7,14,14)});const c=BIL_I.cue&&BIL_I.cue[0];if(imgOk(c)){x.save();x.translate(62,75);x.rotate(Math.PI);x.drawImage(c,6,-4,120,8);x.restore()}}
   if(id==='dama'){x.fillStyle='#0a0820';x.fillRect(0,0,w,h);const s=16,ox=w/2-4*s,oy=h/2-4*s;for(let r=0;r<8;r++)for(let c=0;c<8;c++){x.fillStyle=(r+c)%2?'#14123a':'#8a9ad8';x.fillRect(ox+c*s,oy+r*s,s,s)}x.shadowColor='#4fb6ff';x.shadowBlur=10;x.strokeStyle='#4fb6ff';x.lineWidth=2;x.strokeRect(ox,oy,8*s,8*s);x.shadowBlur=0;
     for(let r=0;r<8;r++)for(let c=0;c<8;c++)if((r+c)%2&&(r<2||r>5)){const im=DAM_I[r<2?'pink':'blue']&&DAM_I[r<2?'pink':'blue'][0];if(imgOk(im))x.drawImage(im,ox+c*s+1,oy+r*s+1,s-2,s-2)}}
+  if(id==='maze'){x.fillStyle='#02101a';x.fillRect(0,0,w,h);const cx=w/2,cy=h/2,ix=28,iy=18;x.shadowColor='#18e6ff';x.shadowBlur=8;x.strokeStyle='#5ff4ff';x.lineWidth=1.5;x.strokeRect(cx-ix,cy-iy,ix*2,iy*2);for(const[a,b,c,d]of[[0,0,cx-ix,cy-iy],[w,0,cx+ix,cy-iy],[0,h,cx-ix,cy+iy],[w,h,cx+ix,cy+iy]]){x.beginPath();x.moveTo(a,b);x.lineTo(c,d);x.stroke()}x.globalAlpha=.55;for(let k=1;k<5;k++){const t=k/5,sx=cx-ix-(cx-ix)*t,sy=cy-iy-(cy-iy)*t;x.strokeRect(sx,sy,w-2*sx,h-2*sy)}for(let k=-3;k<=3;k++){x.beginPath();x.moveTo(cx+k*ix/3,cy+iy);x.lineTo(cx+k*w/5,h);x.stroke()}x.globalAlpha=1;x.shadowColor='#ff2bd6';x.shadowBlur=14;const dy=cy+2;x.fillStyle='#ff2bd6';x.beginPath();x.moveTo(cx,dy-16);x.lineTo(cx+11,dy);x.lineTo(cx,dy+16);x.lineTo(cx-11,dy);x.closePath();x.fill();x.fillStyle='#3fe0cf';x.beginPath();x.moveTo(cx,dy-16);x.lineTo(cx+11,dy);x.lineTo(cx,dy);x.closePath();x.fill();x.shadowBlur=0;x.strokeStyle='#fff';x.lineWidth=1.2;x.beginPath();x.moveTo(cx,dy-16);x.lineTo(cx+11,dy);x.lineTo(cx,dy+16);x.lineTo(cx-11,dy);x.closePath();x.stroke()}
   if(id==='poker'){felt();['A','K','Q','J','10'].forEach((t,i)=>fcard(36+i*42,h/2-12,0,'#fbf6ea',i%2?'#d23447':'#21182f',t));for(let i=0;i<5;i++){const cx=60+i*30,cy=h-18;x.fillStyle=['#e5484d','#3e63dd','#2f9d62','#e5484d','#21182f'][i];x.beginPath();x.arc(cx,cy,10,0,7);x.fill();x.strokeStyle='#fff';x.setLineDash([3,3]);x.lineWidth=2;x.beginPath();x.arc(cx,cy,7,0,7);x.stroke();x.setLineDash([])}}
 }
 function renderLobby(){for(const k of['arcade','carte','tavolo']){const g=$('#g-'+k);g.innerHTML='';GAMES.filter(d=>d.kind===k).forEach(d=>{const b=document.createElement('button');b.className='cab';
-  const best=store.get('best:'+d.id,0);b.innerHTML=`<canvas width="240" height="150" aria-hidden="true"></canvas><span class="tx"><span class="nm">${d.name}</span><span class="ds">${d.desc}</span><span class="rc">${best?'RECORD '+best:'NESSUN RECORD'}</span></span>`;
-  b.onclick=()=>open(d.id);g.appendChild(b);preview(d.id,b.querySelector('canvas'))})}}
+  const best=d.best?d.best():store.get('best:'+d.id,0);b.innerHTML=`<canvas width="240" height="150" aria-hidden="true"></canvas><span class="tx"><span class="nm">${d.name}</span><span class="ds">${d.desc}</span><span class="rc">${best?'RECORD '+best:'NESSUN RECORD'}</span></span>`;
+  b.onclick=d.href?()=>{location.href=d.href}:()=>open(d.id);g.appendChild(b);preview(d.id,b.querySelector('canvas'))})}}
 renderLobby();
 setTimeout(()=>{if(!cur)renderLobby()},700);
 if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>{if(!cur)renderLobby()});

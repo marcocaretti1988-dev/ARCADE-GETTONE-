@@ -1,8 +1,8 @@
 # Arcade Gettone
 
-Sala giochi in una sola pagina web: 13 giochi originali con musica chiptune ed effetti sonori.
+Sala giochi in una sola pagina web: 14 giochi originali con musica chiptune ed effetti sonori.
 
-**Arcade:** Blocchi · Bolle · Arpione · Invasori · Serpe · Mangiapunti
+**Arcade:** Blocchi · Bolle · Arpione · Invasori · Serpe · Mangiapunti · Maze Runner 2040 (3D)
 **Carte:** Ultima Carta · Briscola · Scopa · Solitario · Texas Hold'em contro il banco
 **Sala da gioco:** Biliardo (palla 8) · Cyber Dama
 
@@ -14,4 +14,5 @@ Si gioca da tastiera sul computer o con i tasti a schermo sul telefono. Si insta
 
 ## File
 - `index.html` — tutta la sala giochi
+- `maze-runner-2040.html` — Maze Runner 2040, labirinto 3D in prima persona (Three.js)
 - `manifest.webmanifest`, `sw.js`, `icons/` — installazione come app e modalità offline

@@ -1,7 +1,7 @@
 {
   "name": "Arcade Gettone",
   "short_name": "Gettone",
-  "description": "Sala giochi con 13 giochi arcade e di carte.",
+  "description": "Sala giochi con 14 giochi arcade e di carte.",
   "lang": "it",
   "start_url": "./",
   "scope": "./",
