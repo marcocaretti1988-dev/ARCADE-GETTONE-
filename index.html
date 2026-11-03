@@ -370,6 +370,21 @@ canvas.screen{display:block;border-radius:10px;box-shadow:0 0 0 2px var(--line),
 .st-D .item .ds{display:block;font-size:12px;color:#7fae86;line-height:1.35}
 .st-D .item .rc{display:block;font-family:var(--f-pix);font-size:10px;color:#ffe46b;margin-top:2px}
 .st-D .foot{color:#7fae86}
+
+/* Pulsanti da cabinato */
+#lobby .lctl{gap:clamp(14px,6vw,34px);margin-top:22px;align-items:flex-start}
+.abtn{--c:#e5232f;--hi:#ff8a8a;--lo:#7a0a12;display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;padding:0;width:92px;-webkit-user-select:none;user-select:none}
+.abtn.yel{--c:#ffc414;--hi:#fff3a0;--lo:#8a5c00}.abtn.grn{--c:#23c24a;--hi:#a8ffbd;--lo:#0b5a1e}
+.abtn .cap{position:relative;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle at 50% 55%,#2a2a2e,#0c0c0f 70%);box-shadow:0 0 0 3px #3a3a42,0 6px 0 #050507,0 10px 16px rgba(0,0,0,.6)}
+.abtn .cap::before{content:"";position:absolute;inset:8px;border-radius:50%;background:radial-gradient(circle at 38% 30%,var(--hi),var(--c) 42%,var(--lo));box-shadow:0 6px 0 var(--lo),inset 0 -4px 6px rgba(0,0,0,.25),0 0 18px color-mix(in srgb,var(--c) 70%,transparent);transform:translateY(-5px);transition:transform .08s,box-shadow .08s}
+.abtn .cap::after{content:"";position:absolute;left:24px;top:14px;width:16px;height:9px;border-radius:50%;background:rgba(255,255,255,.55);transform:translateY(-5px) rotate(-18deg);transition:transform .08s}
+.abtn:active .cap::before{transform:translateY(0);box-shadow:0 1px 0 var(--lo),inset 0 -2px 4px rgba(0,0,0,.3),0 0 10px color-mix(in srgb,var(--c) 50%,transparent)}
+.abtn:active .cap::after{transform:translateY(0) rotate(-18deg)}
+.abtn.dim .cap::before{filter:saturate(.35) brightness(.55);box-shadow:0 6px 0 var(--lo),inset 0 -4px 6px rgba(0,0,0,.35)}
+.abtn .al{font-family:var(--f-pix);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#f4effc;text-align:center;line-height:1.25}
+.abtn .al small{display:block;font-size:10px;letter-spacing:.06em;color:color-mix(in srgb,var(--c) 70%,#fff);text-transform:none;margin-top:2px}
+.abtn.dim .al small{color:var(--muted)}
+.abtn:focus-visible{outline:none}.abtn:focus-visible .cap{box-shadow:0 0 0 3px var(--gold),0 6px 0 #050507}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -379,7 +394,7 @@ canvas.screen{display:block;border-radius:10px;box-shadow:0 0 0 2px var(--line),
 <div id="lobby" class="st-A">
   <div class="wrap">
     <div id="lhead"></div>
-    <div class="lctl" id="lctl"><button class="tgl" id="lmus">♪ Musica</button><button class="tgl" id="lsfx">Effetti sonori</button><button class="tgl sty" id="lsty" aria-label="Cambia stile della sala">Stile</button></div>
+    <div class="lctl" id="lctl"><button class="abtn red" id="lmus"><span class="cap"></span><span class="al">Musica</span></button><button class="abtn yel" id="lsfx"><span class="cap"></span><span class="al">Effetti</span></button><button class="abtn grn" id="lsty" aria-label="Cambia stile della sala"><span class="cap"></span><span class="al">Stile</span></button></div>
     <div id="lbody"></div>
     <p class="foot">Record e fiches restano salvati su questo dispositivo. Su iPhone, se non senti nulla, controlla il volume.</p>
   </div>
@@ -431,7 +446,7 @@ function Stars(n,w,h){const s=[...Array(n)].map(()=>({x:Math.random()*w,y:Math.r
 
 /* ================= Audio: musica chiptune e effetti ================= */
 const SONGS={
-  lobby:{bpm:132,lead:"C5 . E5 G5 . E5 C5 . D5 . F5 A5 . F5 D5 . E5 . G5 C6 . G5 E5 . D5 . B4 G4 . B4 D5 .",bass:"C3 . C3 . G2 . G2 . F2 . F2 . G2 . G2 .",drum:"k.h.s.h.k.h.s.hh"},
+  lobby:{bpm:150,lead:"G5 . G5 B5 D6 . B5 G5 A5 . A5 C6 E6 . D6 C6 B5 . G5 . D5 G5 B5 . A5 G5 F#5 . A5 D6 . C6 B5 A5 G5 . G5 B5 D6 . G6 . E6 . D6 C6 B5 . A5 . C6 . B5 A5 G5 . E5 G5 F#5 . D5 F#5 G5 . . .",bass:"G2 G3 G2 G3 E2 E3 E2 E3 C2 C3 C2 C3 D2 D3 D2 D3",drum:"k.h.s.hkk.h.s.hh"},
   blocchi:{bpm:150,lead:"A4 . C5 E5 D5 . C5 B4 A4 . A4 C5 E5 . D5 C5 B4 . . C5 D5 . E5 . C5 . A4 . A4 . . .",bass:"A2 A3 A2 A3 E2 E3 E2 E3 F2 F3 F2 F3 E2 E3 G#2 E3",drum:"k.h.s.h.k.k.s.h."},
   bolle:{bpm:140,lead:"F5 . A5 . C6 . A5 . G5 . A5 . F5 . . . D5 . F5 . A5 . G5 . E5 . C5 . . .",bass:"F2 . C3 . F2 . C3 . Bb2 . F3 . C3 . E3 .",drum:"k...h...k.k.h...",wave:'triangle'},
   arpione:{bpm:160,lead:"D5 D5 F#5 A5 . A5 F#5 D5 E5 E5 G5 B5 . B5 A5 . D5 D5 F#5 A5 . D6 C#6 B5 A5 G5 F#5 E5 D5 . . .",bass:"D3 A2 D3 A2 G2 D3 A2 E3",drum:"k.s.k.s.k.s.kss."},
@@ -481,6 +496,7 @@ const Snd=(()=>{
     capture:()=>{noise(.08,.25,2500,'highpass');arp(['G5','C6'],.06,'triangle',.18)},
     scopa:()=>arp(['C5','E5','G5','C6','G5','C6'],.08,'square',.17),
     coin:()=>{tone(988,.08,'square',.14);tone(1319,.3,'square',.14,1,null,.08)},
+    insert:()=>{tone(988,.06,'square',.15);tone(1319,.12,'square',.15,1,null,.06);arp(['C5','E5','G5','C6','G5','C6','E6'],.06,'square',.13)},
     bad:()=>tone(160,.18,'square',.13,.8),select:()=>tone(700,.05,'square',.07),
     win:()=>arp(['C5','E5','G5','C6','E6','G6','C7'],.09,'square',.17),over:()=>arp(['G4','E4','C4','G3'],.16,'triangle',.3)};
   function startSong(id){stopSong();const s=SONGS[id];if(!s||!ac||!on.mus)return;playing=id;
@@ -534,7 +550,7 @@ $('#ovb').onclick=()=>ovAction&&ovAction();
 function togglePause(){if(!cur||cur.dom)return;if(ovOpen&&paused){hideOv();return}if(ovOpen)return;paused=true;Snd.duck(true);showOv('Pausa','Il gettone è al sicuro.','Riprendi',hideOv)}
 $('#pausebtn').onclick=togglePause;
 $('#back').onclick=()=>close();
-function syncToggles(){for(const k of['mus','sfx']){const v=Snd.on[k];$('#l'+k).setAttribute('aria-pressed',v);$('#l'+k).textContent=(k==='mus'?'♪ Musica: ':'Effetti sonori: ')+(v?'sì':'no');$('#g'+k).classList.toggle('off',!v);$('#g'+k).setAttribute('aria-pressed',v)}}
+function syncToggles(){for(const k of['mus','sfx']){const v=Snd.on[k],b=$('#l'+k);b.setAttribute('aria-pressed',v);b.classList.toggle('dim',!v);b.querySelector('.al').innerHTML=(k==='mus'?'Musica':'Effetti')+'<small>'+(v?'ON':'OFF')+'</small>';b.setAttribute('aria-label',(k==='mus'?'Musica ':'Effetti sonori ')+(v?'accesa':'spenta'));$('#g'+k).classList.toggle('off',!v);$('#g'+k).setAttribute('aria-pressed',v)}}
 for(const k of['mus','sfx'])for(const p of['l','g'])$('#'+p+k).onclick=()=>{Snd.unlock();Snd.toggle(k);syncToggles()};
 syncToggles();
 
@@ -1640,9 +1656,9 @@ const STY=[{k:'A',n:'Insegna al neon'},{k:'B',n:"Tramonto anni '80"},{k:'C',n:"G
 const SHELF=[['arcade','Sala arcade'],['carte','Tavolo da carte'],['tavolo','Sala da gioco']];
 let lsty=store.get('lsty','A'),bFilter='all';if(!STY.some(t=>t.k===lsty))lsty='A';
 const bestOf=d=>d.best?d.best():store.get('best:'+d.id,0);
-const goGame=d=>{if(d.href)location.href=d.href;else open(d.id)};
+const goGame=d=>{Snd.unlock();Snd.fx('insert');setTimeout(()=>{if(d.href)location.href=d.href;else open(d.id)},420)};
 const NUMW=['zero','uno','due','tre','quattro','cinque','sei','sette','otto','nove','dieci','undici','dodici','tredici','quattordici','quindici','sedici','diciassette','diciotto','diciannove','venti'];
-function stripHTML(){return `<div class="strip"><button class="nav l" data-nav="-1" aria-label="Scorri a sinistra">‹</button><div class="rail">${GAMES.map(d=>`<button class="gc" data-go="${d.id}"><canvas width="240" height="150" aria-hidden="true"></canvas><span>${d.name}</span></button>`).join('')}</div><button class="nav r" data-nav="1" aria-label="Scorri a destra">›</button><span class="hint">SCORRI ↔</span></div>`}
+function stripHTML(){return '';return `<div class="strip"><button class="nav l" data-nav="-1" aria-label="Scorri a sinistra">‹</button><div class="rail">${GAMES.map(d=>`<button class="gc" data-go="${d.id}"><canvas width="240" height="150" aria-hidden="true"></canvas><span>${d.name}</span></button>`).join('')}</div><button class="nav r" data-nav="1" aria-label="Scorri a destra">›</button><span class="hint">SCORRI ↔</span></div>`}
 function headHTML(){const n=GAMES.length,nw=NUMW[n]||n,Nw=nw.charAt(0).toUpperCase()+nw.slice(1),tag=`${Nw} cabinati in una sala sola. Si gioca da tastiera sul Mac o con i tasti a schermo sull'iPhone.`,cnt=k=>GAMES.filter(g=>g.kind===k).length;
   if(lsty==='A')return `<div class="sign"><span class="open">APERTO</span><h1><span class="l1">Arcade</span><span class="l2">Get<span class="lg-off">t</span>one</span></h1>${stripHTML()}<p class="lg-tag">${tag}</p><div data-ctl></div></div>`;
   if(lsty==='B')return `<div class="hero"><div class="sun"></div><h1>ARCADE<br>GETTONE</h1><p class="sub">${n} CABINATI · UNA SALA</p><p class="coinb">INSERT COIN</p><div class="floor"></div></div>${stripHTML()}<div data-ctl></div>`;
@@ -1658,7 +1674,7 @@ function bodyHTML(){
 let LCTL=null;
 function renderLobby(){const L=$('#lobby');LCTL=LCTL||$('#lctl');const ctl=LCTL;ctl.remove();L.className='st-'+lsty;$('#lhead').innerHTML=headHTML();$('#lbody').innerHTML=bodyHTML();
   const slot=$('#lhead [data-ctl]');if(slot)slot.replaceWith(ctl);
-  $('#lsty').textContent='🎨 Stile: '+STY.find(t=>t.k===lsty).n;
+  $('#lsty .al').innerHTML='Stile<small>'+STY.find(t=>t.k===lsty).n+'</small>';
   L.querySelectorAll('canvas').forEach(c=>{const b=c.closest('[data-go]');if(b)preview(b.dataset.go,c)})}
 $('#lobby').addEventListener('click',e=>{const nv=e.target.closest('[data-nav]');if(nv){const r=nv.parentElement.querySelector('.rail');r.scrollBy({left:+nv.dataset.nav*r.clientWidth*.8,behavior:'smooth'});return}
   const f=e.target.closest('[data-f]');if(f){bFilter=f.dataset.f;Snd.fx('select');renderLobby();return}
